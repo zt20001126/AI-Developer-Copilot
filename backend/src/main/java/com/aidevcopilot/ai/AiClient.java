@@ -19,7 +19,8 @@ public interface AiClient {
      *
      * @param request AI 请求参数，包含用户提示词、系统提示词和扩展元数据
      * @return AI 响应结果，包含模型输出内容和扩展元数据
-     * @throws com.aidevcopilot.exception.BusinessException 当模型能力尚未实现或调用失败时抛出
+     * @throws com.aidevcopilot.common.exception.BusinessException 当模型能力尚未实现或调用失败时抛出
      */
     AiResponse chat(AiRequest request);
 }
+

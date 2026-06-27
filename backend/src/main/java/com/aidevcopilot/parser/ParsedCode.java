@@ -29,3 +29,4 @@ public class ParsedCode {
     /** 解析扩展信息，例如文件名、行号范围、语法树摘要等。 */
     private Map<String, Object> metadata;
 }
+

@@ -19,7 +19,8 @@ public interface AiWorkflowEngine {
      * @param workflowCode 工作流编码，例如 code_review_workflow
      * @param context 工作流上下文，包含输入变量和运行过程数据
      * @return 执行后的工作流上下文
-     * @throws com.aidevcopilot.exception.BusinessException 当前阶段工作流能力未实现时抛出
+     * @throws com.aidevcopilot.common.exception.BusinessException 当前阶段工作流能力未实现时抛出
      */
     WorkflowContext run(String workflowCode, WorkflowContext context);
 }
+

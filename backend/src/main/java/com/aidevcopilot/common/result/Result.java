@@ -1,4 +1,4 @@
-package com.aidevcopilot.utils;
+package com.aidevcopilot.common.result;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -63,3 +63,4 @@ public class Result<T> {
         return new Result<>(code, message, null);
     }
 }
+

@@ -1,7 +1,7 @@
 package com.aidevcopilot.parser;
 
-import com.aidevcopilot.exception.BusinessException;
-import com.aidevcopilot.exception.ErrorCode;
+import com.aidevcopilot.common.exception.BusinessException;
+import com.aidevcopilot.common.exception.ErrorCode;
 import org.springframework.stereotype.Component;
 
 /**
@@ -34,3 +34,4 @@ public class DefaultCodeParser implements CodeParser {
         throw new BusinessException(ErrorCode.FEATURE_NOT_IMPLEMENTED, "Code parser is reserved for later phases.");
     }
 }
+

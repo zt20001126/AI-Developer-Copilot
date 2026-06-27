@@ -1,5 +1,7 @@
 package com.aidevcopilot.config;
 
+import com.aidevcopilot.config.properties.CorsProperties;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -19,7 +21,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @since 2026-06-25
  */
 @Configuration
+@RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
+
+    /** 跨域配置属性，允许不同环境通过配置文件控制前端来源。 */
+    private final CorsProperties corsProperties;
 
     /**
      * 注册跨域访问规则。
@@ -29,9 +35,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-                .allowedOriginPatterns("*")
+                .allowedOriginPatterns(corsProperties.getAllowedOriginPatterns().toArray(String[]::new))
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(false);
     }
 }
+

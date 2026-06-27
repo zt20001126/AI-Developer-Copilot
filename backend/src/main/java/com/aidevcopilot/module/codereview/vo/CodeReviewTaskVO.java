@@ -1,4 +1,4 @@
-package com.aidevcopilot.vo;
+package com.aidevcopilot.module.codereview.vo;
 
 import lombok.Data;
 
@@ -39,3 +39,4 @@ public class CodeReviewTaskVO {
     /** 任务更新时间。 */
     private LocalDateTime updatedTime;
 }
+

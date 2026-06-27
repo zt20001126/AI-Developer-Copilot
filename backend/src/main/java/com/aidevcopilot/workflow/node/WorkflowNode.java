@@ -28,7 +28,8 @@ public interface WorkflowNode {
      *
      * @param context 工作流上下文，包含节点输入和中间变量
      * @return 执行后的工作流上下文
-     * @throws com.aidevcopilot.exception.BusinessException 节点执行失败时抛出
+     * @throws com.aidevcopilot.common.exception.BusinessException 节点执行失败时抛出
      */
     WorkflowContext execute(WorkflowContext context);
 }
+

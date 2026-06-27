@@ -1,6 +1,8 @@
 package com.aidevcopilot;
 
+import com.aidevcopilot.config.properties.CorsProperties;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -16,7 +18,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author AI Developer Copilot Team
  * @since 2026-06-25
  */
-@MapperScan("com.aidevcopilot.mapper")
+@MapperScan("com.aidevcopilot.module")
+@EnableConfigurationProperties(CorsProperties.class)
 @SpringBootApplication
 public class AiDeveloperCopilotApplication {
 
@@ -29,3 +32,4 @@ public class AiDeveloperCopilotApplication {
         SpringApplication.run(AiDeveloperCopilotApplication.class, args);
     }
 }
+

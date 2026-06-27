@@ -25,3 +25,4 @@ public class WorkflowContext {
     /** 工作流变量集合，用于在节点之间传递解析结果、AI 输出和状态信息。 */
     private Map<String, Object> variables = new HashMap<>();
 }
+

@@ -1,9 +1,9 @@
-package com.aidevcopilot.controller;
+package com.aidevcopilot.module.codereview.controller;
 
-import com.aidevcopilot.dto.CodeReviewTaskCreateDTO;
-import com.aidevcopilot.service.CodeReviewTaskService;
-import com.aidevcopilot.utils.Result;
-import com.aidevcopilot.vo.CodeReviewTaskVO;
+import com.aidevcopilot.module.codereview.dto.CodeReviewTaskCreateDTO;
+import com.aidevcopilot.module.codereview.service.CodeReviewTaskService;
+import com.aidevcopilot.common.result.Result;
+import com.aidevcopilot.module.codereview.vo.CodeReviewTaskVO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +43,7 @@ public class CodeReviewTaskController {
      *
      * @param request 创建代码评审任务请求参数
      * @return 包含任务信息的统一响应结果
-     * @throws com.aidevcopilot.exception.BusinessException 当前阶段业务能力未实现时抛出
+     * @throws com.aidevcopilot.common.exception.BusinessException 当前阶段业务能力未实现时抛出
      */
     @PostMapping
     public Result<CodeReviewTaskVO> createTask(@Valid @RequestBody CodeReviewTaskCreateDTO request) {
@@ -60,10 +60,11 @@ public class CodeReviewTaskController {
      *
      * @param id 代码评审任务主键
      * @return 包含任务详情的统一响应结果
-     * @throws com.aidevcopilot.exception.BusinessException 当前阶段业务能力未实现时抛出
+     * @throws com.aidevcopilot.common.exception.BusinessException 当前阶段业务能力未实现时抛出
      */
     @GetMapping("/{id}")
     public Result<CodeReviewTaskVO> getTask(@PathVariable Long id) {
         return Result.success(codeReviewTaskService.getTask(id));
     }
 }
+

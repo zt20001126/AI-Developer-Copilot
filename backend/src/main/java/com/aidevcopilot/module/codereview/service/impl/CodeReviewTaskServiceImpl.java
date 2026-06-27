@@ -1,12 +1,12 @@
-package com.aidevcopilot.service.impl;
+package com.aidevcopilot.module.codereview.service.impl;
 
-import com.aidevcopilot.dto.CodeReviewTaskCreateDTO;
-import com.aidevcopilot.entity.CodeReviewTask;
-import com.aidevcopilot.exception.BusinessException;
-import com.aidevcopilot.exception.ErrorCode;
-import com.aidevcopilot.mapper.CodeReviewTaskMapper;
-import com.aidevcopilot.service.CodeReviewTaskService;
-import com.aidevcopilot.vo.CodeReviewTaskVO;
+import com.aidevcopilot.module.codereview.dto.CodeReviewTaskCreateDTO;
+import com.aidevcopilot.module.codereview.entity.CodeReviewTask;
+import com.aidevcopilot.common.exception.BusinessException;
+import com.aidevcopilot.common.exception.ErrorCode;
+import com.aidevcopilot.module.codereview.mapper.CodeReviewTaskMapper;
+import com.aidevcopilot.module.codereview.service.CodeReviewTaskService;
+import com.aidevcopilot.module.codereview.vo.CodeReviewTaskVO;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -62,3 +62,4 @@ public class CodeReviewTaskServiceImpl extends ServiceImpl<CodeReviewTaskMapper,
         throw new BusinessException(ErrorCode.FEATURE_NOT_IMPLEMENTED, "Code review task query is reserved for later phases.");
     }
 }
+

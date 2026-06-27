@@ -1,4 +1,4 @@
-package com.aidevcopilot.dto;
+package com.aidevcopilot.module.codereview.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -25,3 +25,4 @@ public class CodeReviewTaskCreateDTO {
     @NotBlank(message = "inputContent must not be blank")
     private String inputContent;
 }
+

@@ -1,4 +1,4 @@
-package com.aidevcopilot.exception;
+package com.aidevcopilot.common.exception;
 
 import lombok.Getter;
 
@@ -38,3 +38,4 @@ public enum ErrorCode {
         this.message = message;
     }
 }
+

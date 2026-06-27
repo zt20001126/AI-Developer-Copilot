@@ -1,6 +1,6 @@
-package com.aidevcopilot.controller;
+package com.aidevcopilot.module.system.controller;
 
-import com.aidevcopilot.utils.Result;
+import com.aidevcopilot.common.result.Result;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,3 +41,5 @@ public class HealthController {
         ));
     }
 }
+
+

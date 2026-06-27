@@ -1,7 +1,7 @@
 package com.aidevcopilot.workflow;
 
-import com.aidevcopilot.exception.BusinessException;
-import com.aidevcopilot.exception.ErrorCode;
+import com.aidevcopilot.common.exception.BusinessException;
+import com.aidevcopilot.common.exception.ErrorCode;
 import org.springframework.stereotype.Component;
 
 /**
@@ -34,3 +34,4 @@ public class DefaultAiWorkflowEngine implements AiWorkflowEngine {
         throw new BusinessException(ErrorCode.FEATURE_NOT_IMPLEMENTED, "AI workflow engine is reserved for later phases.");
     }
 }
+

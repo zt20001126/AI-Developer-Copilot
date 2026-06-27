@@ -1,6 +1,6 @@
-package com.aidevcopilot.mapper;
+package com.aidevcopilot.module.codereview.mapper;
 
-import com.aidevcopilot.entity.CodeReviewTask;
+import com.aidevcopilot.module.codereview.entity.CodeReviewTask;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -16,3 +16,4 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface CodeReviewTaskMapper extends BaseMapper<CodeReviewTask> {
 }
+

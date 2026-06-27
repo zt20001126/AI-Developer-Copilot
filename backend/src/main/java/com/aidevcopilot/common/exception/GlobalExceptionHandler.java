@@ -1,6 +1,6 @@
-package com.aidevcopilot.exception;
+package com.aidevcopilot.common.exception;
 
-import com.aidevcopilot.utils.Result;
+import com.aidevcopilot.common.result.Result;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -67,3 +67,4 @@ public class GlobalExceptionHandler {
         return Result.failure(ErrorCode.INTERNAL_ERROR.getCode(), ErrorCode.INTERNAL_ERROR.getMessage());
     }
 }
+

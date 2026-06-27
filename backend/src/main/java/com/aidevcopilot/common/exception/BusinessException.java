@@ -1,4 +1,4 @@
-package com.aidevcopilot.exception;
+package com.aidevcopilot.common.exception;
 
 import lombok.Getter;
 
@@ -40,3 +40,4 @@ public class BusinessException extends RuntimeException {
         this.code = errorCode.getCode();
     }
 }
+

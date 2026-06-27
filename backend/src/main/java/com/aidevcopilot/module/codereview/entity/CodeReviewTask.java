@@ -1,7 +1,8 @@
-package com.aidevcopilot.entity;
+package com.aidevcopilot.module.codereview.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.aidevcopilot.common.enums.CodeReviewTaskStatusEnum;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -25,7 +26,7 @@ public class CodeReviewTask {
     @TableId
     private Long id;
 
-    /** 当前任务状态，例如 PENDING、RUNNING、SUCCESS、FAILED。 */
+    /** 当前任务状态，取值来自 {@link CodeReviewTaskStatusEnum#getCode()}。 */
     private String status;
 
     /** 代码语言，用于代码解析和 AI Prompt 模板选择。 */
@@ -43,3 +44,4 @@ public class CodeReviewTask {
     /** 任务最后更新时间，用于记录状态流转时间。 */
     private LocalDateTime updatedTime;
 }
+

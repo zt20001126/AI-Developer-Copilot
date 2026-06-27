@@ -19,7 +19,8 @@ public interface CodeParser {
      * @param language 代码语言，用于选择语言特定解析策略
      * @param content 用户提交的代码内容
      * @return 标准化代码解析结果
-     * @throws com.aidevcopilot.exception.BusinessException 当前阶段解析能力未实现时抛出
+     * @throws com.aidevcopilot.common.exception.BusinessException 当前阶段解析能力未实现时抛出
      */
     ParsedCode parse(String language, String content);
 }
+

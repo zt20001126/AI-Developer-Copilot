@@ -26,3 +26,4 @@ public class AiResponse {
     /** 扩展元数据，用于承载 token 用量、模型名称、请求标识等信息。 */
     private Map<String, Object> metadata;
 }
+

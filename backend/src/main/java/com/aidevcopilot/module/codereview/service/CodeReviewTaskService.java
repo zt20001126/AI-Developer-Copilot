@@ -1,8 +1,8 @@
-package com.aidevcopilot.service;
+package com.aidevcopilot.module.codereview.service;
 
-import com.aidevcopilot.dto.CodeReviewTaskCreateDTO;
-import com.aidevcopilot.entity.CodeReviewTask;
-import com.aidevcopilot.vo.CodeReviewTaskVO;
+import com.aidevcopilot.module.codereview.dto.CodeReviewTaskCreateDTO;
+import com.aidevcopilot.module.codereview.entity.CodeReviewTask;
+import com.aidevcopilot.module.codereview.vo.CodeReviewTaskVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -23,7 +23,7 @@ public interface CodeReviewTaskService extends IService<CodeReviewTask> {
      *
      * @param request 创建任务请求参数
      * @return 创建后的任务视图对象
-     * @throws com.aidevcopilot.exception.BusinessException 当前阶段业务能力未实现时抛出
+     * @throws com.aidevcopilot.common.exception.BusinessException 当前阶段业务能力未实现时抛出
      */
     CodeReviewTaskVO createTask(CodeReviewTaskCreateDTO request);
 
@@ -32,7 +32,8 @@ public interface CodeReviewTaskService extends IService<CodeReviewTask> {
      *
      * @param id 任务主键
      * @return 任务详情视图对象
-     * @throws com.aidevcopilot.exception.BusinessException 当前阶段业务能力未实现或任务不存在时抛出
+     * @throws com.aidevcopilot.common.exception.BusinessException 当前阶段业务能力未实现或任务不存在时抛出
      */
     CodeReviewTaskVO getTask(Long id);
 }
+

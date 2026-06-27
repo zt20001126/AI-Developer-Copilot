@@ -106,3 +106,10 @@ springdoc:
 logging:
   # 指定 Logback 配置文件路径，便于统一管理控制台和文件日志格式。
   config: classpath:logback-spring.xml
+
+# 应用自定义配置。
+app:
+  cors:
+    # 允许访问后端 API 的前端来源。生产环境应改为明确域名，避免放开任意来源。
+    allowed-origin-patterns:
+      - http://localhost:5173

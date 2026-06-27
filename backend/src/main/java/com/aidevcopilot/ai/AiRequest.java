@@ -29,3 +29,4 @@ public class AiRequest {
     /** 扩展元数据，用于传递模型名称、温度、链路追踪标识等非固定参数。 */
     private Map<String, Object> metadata;
 }
+

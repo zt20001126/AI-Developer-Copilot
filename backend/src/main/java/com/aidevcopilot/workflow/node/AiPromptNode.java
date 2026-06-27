@@ -1,7 +1,7 @@
 package com.aidevcopilot.workflow.node;
 
-import com.aidevcopilot.exception.BusinessException;
-import com.aidevcopilot.exception.ErrorCode;
+import com.aidevcopilot.common.exception.BusinessException;
+import com.aidevcopilot.common.exception.ErrorCode;
 import com.aidevcopilot.workflow.WorkflowContext;
 import org.springframework.stereotype.Component;
 
@@ -49,3 +49,4 @@ public class AiPromptNode implements WorkflowNode {
         throw new BusinessException(ErrorCode.FEATURE_NOT_IMPLEMENTED, "AI prompt node is reserved for later phases.");
     }
 }
+

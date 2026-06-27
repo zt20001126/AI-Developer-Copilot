@@ -18,7 +18,8 @@ public interface Workflow {
      *
      * @param context 工作流上下文，包含流程输入和中间变量
      * @return 执行完成后的工作流上下文
-     * @throws com.aidevcopilot.exception.BusinessException 工作流执行失败时抛出
+     * @throws com.aidevcopilot.common.exception.BusinessException 工作流执行失败时抛出
      */
     WorkflowContext execute(WorkflowContext context);
 }
+
