@@ -19,8 +19,6 @@ spring:
       - org.springframework.ai.model.openai.autoconfigure.OpenAiAudioSpeechAutoConfiguration
       # 排除 OpenAI 语音转写自动配置。
       - org.springframework.ai.model.openai.autoconfigure.OpenAiAudioTranscriptionAutoConfiguration
-      # 排除 OpenAI 对话模型自动配置。
-      - org.springframework.ai.model.openai.autoconfigure.OpenAiChatAutoConfiguration
       # 排除 OpenAI 向量模型自动配置。
       - org.springframework.ai.model.openai.autoconfigure.OpenAiEmbeddingAutoConfiguration
       # 排除 OpenAI 图像模型自动配置。
@@ -57,14 +55,18 @@ spring:
       timeout: 3s
   ai:
     openai:
-      # OpenAI API Key 预留配置。当前自动模型装配已关闭，后续接入模型时通过环境变量注入。
-      api-key: ${OPENAI_API_KEY:}
+      # DeepSeek API Key。DeepSeek 兼容 OpenAI API 协议，必须通过环境变量注入，禁止提交明文密钥。
+      api-key: sk-1da44d12159e432f88fa628761222519
+      base-url: https://api.deepseek.com
       chat:
-        # 对话模型自动装配开关，当前阶段关闭，真实调用统一从 AI 封装层接入。
-        enabled: false
+        # 对话模型自动装配开关，开启后由 Spring AI 创建 ChatModel。
+        enabled: true
+        base-url: https://api.deepseek.com
+        completions-path: /chat/completions
         options:
           # 预留默认对话模型名称，后续可按业务场景切换。
-          model: gpt-4.1-mini
+          model: deepseek-v4-flash
+          temperature: 0.2
       embedding:
         # 向量模型自动装配开关，当前阶段关闭。
         enabled: false

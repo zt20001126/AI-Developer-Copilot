@@ -4,14 +4,19 @@ import axios from 'axios'
 const http = axios.create({
   // 与 Vite 代理保持一致，开发环境会转发到后端 /api/v1。
   baseURL: '/api/v1',
-  // 请求超时时间，避免外部服务异常时页面长时间等待。
-  timeout: 10000
+  // AI 工作流包含真实大模型调用，响应时间可能超过 10 秒；同步联调阶段放宽到 60 秒。
+  timeout: 60000
 })
 
 // 响应拦截器统一返回后端 Result 结构，后续可在此集中处理登录失效和错误提示。
 http.interceptors.response.use(
   response => response.data,
-  error => Promise.reject(error)
+  error => {
+    if (error.code === 'ECONNABORTED') {
+      error.message = 'AI workflow request timed out. Please try again later.'
+    }
+    return Promise.reject(error)
+  }
 )
 
 export default http
