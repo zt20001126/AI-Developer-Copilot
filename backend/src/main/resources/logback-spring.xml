@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 从 Spring 环境读取应用名称，用于日志文件命名，便于多服务部署时区分日志来源。 -->
+    <springProperty scope="context" name="APP_NAME" source="spring.application.name" defaultValue="ai-developer-copilot"/>
+
+    <!-- 统一日志格式，包含时间、线程、级别、日志器和消息内容。 -->
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+
+    <!-- 控制台日志输出，供本地开发和容器标准输出采集使用。 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 文件日志输出，按日期和文件大小滚动，便于问题追踪和日志归档。 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 当前活跃日志文件路径。 -->
+        <file>logs/${APP_NAME}.log</file>
+        <!-- 滚动策略：每天滚动，同时单文件超过 20MB 时切分。 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/${APP_NAME}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+            <!-- 日志保留 30 天，后续生产环境可按合规要求调整。 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 根日志级别，默认 INFO，避免开发阶段输出过多框架 DEBUG 日志。 -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

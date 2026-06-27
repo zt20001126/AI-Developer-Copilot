@@ -1,0 +1,108 @@
+# Web 服务配置。
+server:
+  # 后端服务监听端口，本地开发默认使用 8080。
+  port: 8080
+  servlet:
+    # 应用上下文路径，保持为根路径，便于前端通过 /api 代理访问。
+    context-path: /
+
+# Spring 生态组件配置。
+spring:
+  application:
+    # 应用名称，用于日志、监控和服务识别。
+    name: ai-developer-copilot
+  autoconfigure:
+    # 第一阶段仅保留 Spring AI 依赖和封装入口，不自动创建真实 OpenAI 模型 Bean。
+    # 这样本地未配置 API Key 时，项目仍可正常启动。
+    exclude:
+      # 排除 OpenAI 语音合成自动配置。
+      - org.springframework.ai.model.openai.autoconfigure.OpenAiAudioSpeechAutoConfiguration
+      # 排除 OpenAI 语音转写自动配置。
+      - org.springframework.ai.model.openai.autoconfigure.OpenAiAudioTranscriptionAutoConfiguration
+      # 排除 OpenAI 对话模型自动配置。
+      - org.springframework.ai.model.openai.autoconfigure.OpenAiChatAutoConfiguration
+      # 排除 OpenAI 向量模型自动配置。
+      - org.springframework.ai.model.openai.autoconfigure.OpenAiEmbeddingAutoConfiguration
+      # 排除 OpenAI 图像模型自动配置。
+      - org.springframework.ai.model.openai.autoconfigure.OpenAiImageAutoConfiguration
+      # 排除 OpenAI 内容审核模型自动配置。
+      - org.springframework.ai.model.openai.autoconfigure.OpenAiModerationAutoConfiguration
+  datasource:
+    # PostgreSQL JDBC 驱动类。
+    driver-class-name: org.postgresql.Driver
+    # PostgreSQL 连接地址，本地默认数据库名为 ai_developer_copilot。
+    url: jdbc:postgresql://localhost:5432/ai_developer_copilot
+    # 数据库用户名，本地开发默认 postgres，生产环境应通过环境变量或配置中心覆盖。
+    username: postgres
+    # 数据库密码，本地开发默认 postgres，生产环境禁止明文提交真实密码。
+    password: postgres
+    hikari:
+      # Hikari 连接池名称，便于日志和监控识别。
+      pool-name: AiDeveloperCopilotHikari
+      # 最大连接数，第一阶段保持较小规模，后续按并发容量调整。
+      maximum-pool-size: 10
+      # 最小空闲连接数，用于减少低流量场景下的连接资源占用。
+      minimum-idle: 2
+      # 启动时不因数据库暂不可用而直接失败，方便第一阶段无数据库环境验证服务启动。
+      initialization-fail-timeout: -1
+  data:
+    redis:
+      # Redis 主机地址，本地开发默认 localhost。
+      host: localhost
+      # Redis 服务端口，默认 6379。
+      port: 6379
+      # Redis 逻辑库编号，第一阶段使用 0 号库。
+      database: 0
+      # Redis 命令超时时间，避免外部依赖异常导致请求长时间阻塞。
+      timeout: 3s
+  ai:
+    openai:
+      # OpenAI API Key 预留配置。当前自动模型装配已关闭，后续接入模型时通过环境变量注入。
+      api-key: ${OPENAI_API_KEY:}
+      chat:
+        # 对话模型自动装配开关，当前阶段关闭，真实调用统一从 AI 封装层接入。
+        enabled: false
+        options:
+          # 预留默认对话模型名称，后续可按业务场景切换。
+          model: gpt-4.1-mini
+      embedding:
+        # 向量模型自动装配开关，当前阶段关闭。
+        enabled: false
+
+# MyBatis-Plus 配置。
+mybatis-plus:
+  # Mapper XML 文件扫描路径，后续复杂 SQL 可放入 resources/mapper 目录。
+  mapper-locations: classpath*:/mapper/**/*.xml
+  configuration:
+    # 开启下划线到驼峰映射，例如 input_content 自动映射为 inputContent。
+    map-underscore-to-camel-case: true
+    # 使用 SLF4J 输出 SQL 日志，便于接入统一日志系统。
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  global-config:
+    db-config:
+      # 主键生成策略，使用 MyBatis-Plus 分布式 ID。
+      id-type: assign_id
+      # 逻辑删除字段预留，后续表结构增加 deleted 字段后可直接启用。
+      logic-delete-field: deleted
+      # 逻辑删除值。
+      logic-delete-value: 1
+      # 逻辑未删除值。
+      logic-not-delete-value: 0
+
+# Swagger/OpenAPI 文档配置。
+springdoc:
+  api-docs:
+    # 是否启用 OpenAPI JSON 文档。
+    enabled: true
+    # OpenAPI JSON 文档访问路径。
+    path: /v3/api-docs
+  swagger-ui:
+    # 是否启用 Swagger UI 页面。
+    enabled: true
+    # Swagger UI 访问路径。
+    path: /swagger-ui.html
+
+# 日志配置。
+logging:
+  # 指定 Logback 配置文件路径，便于统一管理控制台和文件日志格式。
+  config: classpath:logback-spring.xml
