@@ -38,12 +38,19 @@ public class SpringAiClient implements AiClient {
     @Override
     public AiResponse chat(AiRequest request) {
         try {
+            // 先把平台内部统一的 AiRequest 转换为模型可直接理解的 Prompt 文本。
             String prompt = buildPrompt(request);
+
+            // 这里是真正的大模型调用点。
+            // ChatModel 由 Spring AI 根据 application.yml 中的 DeepSeek/OpenAI-compatible 配置自动创建。
             String content = chatModel.call(prompt);
+
+            // 将模型原始文本封装成平台统一响应，避免上层工作流直接依赖 Spring AI 返回结构。
             return AiResponse.builder()
                     .content(content)
                     .build();
         } catch (Exception exception) {
+            // 模型调用失败时统一转换为业务异常，由 GlobalExceptionHandler 返回给前端。
             throw new BusinessException(ErrorCode.INTERNAL_ERROR, "大模型调用失败：" + exception.getMessage());
         }
     }
@@ -58,9 +65,11 @@ public class SpringAiClient implements AiClient {
      * @return 最终 Prompt 文本
      */
     private String buildPrompt(AiRequest request) {
+        // 没有系统提示词时，直接使用用户 Prompt，适合简单调用场景。
         if (request.getSystemPrompt() == null || request.getSystemPrompt().isBlank()) {
             return request.getPrompt();
         }
+        // 有系统提示词时，把模型角色和用户任务显式分开，提升模型理解稳定性。
         return """
                 系统角色：
                 %s

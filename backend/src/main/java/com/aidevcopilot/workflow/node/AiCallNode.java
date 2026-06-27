@@ -48,11 +48,17 @@ public class AiCallNode extends AbstractWorkflowNode {
      */
     @Override
     public void execute(WorkflowContext context) {
+        // 从 prompt_build 节点读取最终 Prompt。缺少 Prompt 说明上游节点没有正确执行，应立即失败。
         String prompt = requiredVariable(context, WorkflowVariableKeys.PROMPT, String.class);
+
+        // 真实大模型调用必须通过 AiClient 门面完成。
+        // 这样工作流节点不关心 DeepSeek、OpenAI 或其他模型的 SDK 差异，后续切模型只改 AI 封装层。
         AiResponse response = aiClient.chat(AiRequest.builder()
                 .systemPrompt("你是一名资深 Java 代码评审专家，请给出准确、可执行、结构清晰的评审意见。")
                 .prompt(prompt)
                 .build());
+
+        // 将模型响应写回上下文，result_parse 节点负责把它转换成最终业务结果。
         context.putVariable(WorkflowVariableKeys.AI_RESPONSE, response);
     }
 }

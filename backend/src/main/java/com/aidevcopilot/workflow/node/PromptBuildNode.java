@@ -40,7 +40,12 @@ public class PromptBuildNode extends AbstractWorkflowNode {
      */
     @Override
     public void execute(WorkflowContext context) {
+        // prompt_build 不直接读取原始 inputContent，而是读取 code_parse 节点产出的 ParsedCode。
+        // 这样以后 ParsedCode 增加文件名、行号、Diff 信息时，Prompt 构建节点可以直接使用结构化数据。
         ParsedCode parsedCode = requiredVariable(context, WorkflowVariableKeys.PARSED_CODE, ParsedCode.class);
+
+        // 这里是当前代码评审能力的核心 Prompt。
+        // 后续建议迁移为模板文件或数据库配置，便于不同语言、不同审查类型复用。
         String prompt = """
                 请对以下 %s 代码进行基础评审，重点关注：
                 1. 代码可读性
@@ -51,6 +56,8 @@ public class PromptBuildNode extends AbstractWorkflowNode {
                 代码内容：
                 %s
                 """.formatted(parsedCode.getLanguage(), parsedCode.getRawContent());
+
+        // 将构建好的 Prompt 写入上下文，ai_call 节点只负责模型调用，不再关心 Prompt 如何组装。
         context.putVariable(WorkflowVariableKeys.PROMPT, prompt);
     }
 }

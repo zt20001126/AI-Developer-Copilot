@@ -40,6 +40,8 @@ public class ResultParseNode extends AbstractWorkflowNode {
      */
     @Override
     public void execute(WorkflowContext context) {
+        // ai_call 节点返回的是统一 AiResponse，result_parse 节点负责把模型响应转换为业务最终结果。
+        // 当前第一版直接取 content；后续可以在这里解析 JSON、Markdown 或问题列表。
         AiResponse aiResponse = requiredVariable(context, WorkflowVariableKeys.AI_RESPONSE, AiResponse.class);
         context.putVariable(WorkflowVariableKeys.FINAL_RESULT, aiResponse.getContent());
     }

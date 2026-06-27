@@ -51,33 +51,45 @@ public class DefaultWorkflowEngine implements WorkflowEngine {
      */
     @Override
     public WorkflowContext run(WorkflowDefinition definition, WorkflowContext context) {
+        // 工作流定义为空时，引擎不知道要执行哪些节点，必须立即失败。
         if (definition == null) {
             throw new WorkflowException("工作流定义不能为空");
         }
+        // 上下文为空时，节点之间无法传递数据，必须立即失败。
         if (context == null) {
             throw new WorkflowException("工作流上下文不能为空");
         }
 
+        // 将本次执行绑定到具体工作流编码，并标记为 RUNNING。
+        // 这个状态后续可以持久化到 workflow_run 表，用于前端展示执行进度。
         context.setWorkflowCode(definition.getWorkflowCode());
         context.setStatus(WorkflowStatusEnum.RUNNING);
 
         try {
+            // 工作流定义只描述“有哪些节点”，真正执行前需要按 order 排序，保证流程顺序稳定。
             List<WorkflowNodeDefinition> nodeDefinitions = definition.getNodes().stream()
                     .sorted(Comparator.comparing(WorkflowNodeDefinition::getOrder))
                     .toList();
 
             for (WorkflowNodeDefinition nodeDefinition : nodeDefinitions) {
+                // 根据节点编码从注册表中找到实际的 Spring Bean。
+                // 这样引擎只依赖 WorkflowNode 接口，不依赖 CodeParseNode、AiCallNode 等具体类。
                 WorkflowNode node = nodeRegistry.getNode(nodeDefinition.getNodeCode());
                 log.info("Start workflow node. workflowCode={}, runId={}, nodeCode={}",
                         definition.getWorkflowCode(), context.getWorkflowRunId(), nodeDefinition.getNodeCode());
+
+                // 节点会直接读写同一个 context：上一个节点写入的变量，后一个节点可以继续读取。
                 node.execute(context);
+
                 log.info("Finish workflow node. workflowCode={}, runId={}, nodeCode={}",
                         definition.getWorkflowCode(), context.getWorkflowRunId(), nodeDefinition.getNodeCode());
             }
 
+            // 所有节点都执行完成，才认为整个工作流成功。
             context.setStatus(WorkflowStatusEnum.SUCCESS);
             return context;
         } catch (Exception exception) {
+            // 任意节点异常都会中断流程，并把错误信息写回上下文，便于后续排查和持久化。
             context.setStatus(WorkflowStatusEnum.FAILED);
             context.putVariable(WorkflowVariableKeys.ERROR_MESSAGE, exception.getMessage());
             throw new WorkflowException("工作流执行失败：" + definition.getWorkflowCode(), exception);

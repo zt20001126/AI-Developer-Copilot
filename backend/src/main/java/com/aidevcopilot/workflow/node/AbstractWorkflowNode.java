@@ -27,6 +27,8 @@ public abstract class AbstractWorkflowNode implements WorkflowNode {
      * @throws WorkflowException 当变量不存在时抛出
      */
     protected <T> T requiredVariable(WorkflowContext context, String key, Class<T> type) {
+        // 所有节点统一通过该方法读取必填变量，避免各节点重复写空判断。
+        // 如果上游节点没有写入约定变量，说明流程定义或节点实现存在问题，需要立刻中断。
         T value = context.getVariable(key, type);
         if (value == null) {
             throw new WorkflowException("工作流上下文缺少必要变量：" + key);

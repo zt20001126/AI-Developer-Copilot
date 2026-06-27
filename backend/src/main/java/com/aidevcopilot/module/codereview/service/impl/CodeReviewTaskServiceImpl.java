@@ -62,18 +62,28 @@ public class CodeReviewTaskServiceImpl extends ServiceImpl<CodeReviewTaskMapper,
      */
     @Override
     public CodeReviewTaskVO createTask(CodeReviewTaskCreateDTO request) {
+        // 1. 创建本次工作流执行的上下文。上下文相当于“流程背包”，后续每个节点都从这里取数据、往这里放结果。
         WorkflowContext context = new WorkflowContext();
+
+        // 2. 把 Controller 收到的用户输入放入上下文，作为工作流最初的输入变量。
+        // 后续 input_validate、code_parse、prompt_build 节点都会依赖这两个变量。
         context.putVariable(WorkflowVariableKeys.LANGUAGE, request.getLanguage());
         context.putVariable(WorkflowVariableKeys.INPUT_CONTENT, request.getInputContent());
 
+        // 3. 根据工作流编码获取流程定义。这里拿到的是 code_review 工作流，里面声明了 6 个节点及执行顺序。
         WorkflowDefinition definition = workflowDefinitionRegistry.getDefinition(WorkflowCodes.CODE_REVIEW);
+
+        // 4. 交给工作流引擎执行。Service 不关心每个节点怎么做，只负责发起流程并接收最终上下文。
         WorkflowContext resultContext = workflowEngine.run(definition, context);
 
+        // 5. 第一版暂不落库，为了让前端能看到完整返回，这里组装一个 VO。
+        // 后续接入数据库后，应先保存 CodeReviewTask，再由 result_save 节点更新任务结果和状态。
         CodeReviewTaskVO taskVO = new CodeReviewTaskVO();
         taskVO.setId(IdWorker.getId());
         taskVO.setStatus(CodeReviewTaskStatusEnum.SUCCESS.getCode());
         taskVO.setLanguage(request.getLanguage());
         taskVO.setInputContent(request.getInputContent());
+        // finalResult 是 result_parse 节点写入上下文的最终评审文本。
         taskVO.setResultContent(resultContext.getVariable(WorkflowVariableKeys.FINAL_RESULT, String.class));
         taskVO.setCreatedTime(LocalDateTime.now());
         taskVO.setUpdatedTime(LocalDateTime.now());

@@ -42,14 +42,19 @@ public class CodeParseNode extends AbstractWorkflowNode {
      */
     @Override
     public void execute(WorkflowContext context) {
+        // 从上下文读取用户输入。这里依赖 input_validate 节点已经完成非空校验。
         String language = requiredVariable(context, WorkflowVariableKeys.LANGUAGE, String.class);
         String inputContent = requiredVariable(context, WorkflowVariableKeys.INPUT_CONTENT, String.class);
 
+        // 第一版暂不做 AST/语法树解析，只把原始输入包装成 ParsedCode。
+        // 这样后续如果要替换为 JavaParser、Tree-sitter 等真实解析器，只需要改这个节点。
         ParsedCode parsedCode = ParsedCode.builder()
                 .language(language)
                 .rawContent(inputContent)
                 .metadata(Map.of("parseMode", "placeholder"))
                 .build();
+
+        // 把解析结果写回上下文，供 prompt_build 节点继续使用。
         context.putVariable(WorkflowVariableKeys.PARSED_CODE, parsedCode);
     }
 }

@@ -39,6 +39,8 @@ public class ResultSaveNode extends AbstractWorkflowNode {
      */
     @Override
     public void execute(WorkflowContext context) {
+        // 当前第一版还没有持久化工作流结果，因此这里只校验 finalResult 是否已经生成。
+        // 后续接入数据库后，这里应更新 code_review_task.result_content 和任务状态。
         requiredVariable(context, WorkflowVariableKeys.FINAL_RESULT, String.class);
     }
 }

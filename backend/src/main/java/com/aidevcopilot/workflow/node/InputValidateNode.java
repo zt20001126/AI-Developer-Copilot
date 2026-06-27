@@ -40,6 +40,8 @@ public class InputValidateNode extends AbstractWorkflowNode {
      */
     @Override
     public void execute(WorkflowContext context) {
+        // language 和 inputContent 是代码评审流程的最小输入。
+        // 如果这里为空，后面的代码解析和 Prompt 构建都没有意义，所以在第一个节点就拦截。
         String language = requiredVariable(context, WorkflowVariableKeys.LANGUAGE, String.class);
         String inputContent = requiredVariable(context, WorkflowVariableKeys.INPUT_CONTENT, String.class);
         if (language.isBlank()) {
