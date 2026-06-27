@@ -18,7 +18,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author AI Developer Copilot Team
  * @since 2026-06-25
  */
-@MapperScan("com.aidevcopilot.module")
+@MapperScan("com.aidevcopilot.module.codereview.mapper")
 @EnableConfigurationProperties(CorsProperties.class)
 @SpringBootApplication
 public class AiDeveloperCopilotApplication {
